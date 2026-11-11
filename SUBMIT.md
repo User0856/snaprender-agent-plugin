@@ -1,6 +1,6 @@
 # Submitting this plugin
 
-Each portal needs the owner's own sign-in. Nothing here has been submitted yet. Order: Cursor first, then Codex. Run the local checks first:
+Each portal needs the owner's own sign-in. Nothing here has been submitted yet. Order: Claude plugin bundle, Cursor, then Codex. Run the local checks first:
 
 ```sh
 claude plugin validate --strict --profile directory .
@@ -27,11 +27,12 @@ Text to paste:
 | Description | SnapRender renders public web pages in a real browser and returns what a visitor sees: desktop and phone screenshots, full pages, dark mode, with ads and cookie banners removed. It also reads pages as clean markdown. The plugin connects Cursor to the hosted SnapRender MCP server (OAuth sign-in in the browser, 11 tools) and adds three skills: see-web-page (desktop and phone screenshots with a short report of visual bugs), read-web-page (current docs as markdown before writing code) and watch-web-page (scheduled captures that alert when a page changes). Free plan: 200 captures a month. Public pages only: no localhost, private networks or pages behind a login. |
 | Category (if asked) | Developer tools |
 
-## 2. Claude plugin directory (Anthropic): not available
+## 2. Claude plugin directory (Anthropic)
 
-Not available for this project. Anthropic's directory now takes submissions from registered businesses only, so nothing is submitted there. Revisit only if that rule changes.
-
-The plugin still installs in Claude Code from this repo's own marketplace: `/plugin marketplace add User0856/snaprender-agent-plugin`, then `/plugin install snaprender@snaprender`.
+- **Portal:** https://claude.ai/directory/manage. Any paid claude.ai plan can submit (Pro and Max from your own account). The Company step takes a name and website as free text.
+- **Status:** the hosted MCP connector (https://app.snap-render.com/mcp) was submitted on Nov 12 2026 and is in review. Next: submit this repo as a **Plugin bundle** (Submit new, Plugin bundle, repo `User0856/snaprender-agent-plugin`, path and branch empty) and link it to the connector.
+- Saving an edit on a listing that is in review moves it back to Draft: click **Submit for review** again after saving.
+- Data handling answers: no personal data read or stored; data goes only to `https://app.snap-render.com/mcp`; captures cached 24 hours by default; not intended for under-18s. Contact: support@snap-render.com.
 
 ## 3. OpenAI plugin portal (Codex)
 
