@@ -1,6 +1,6 @@
 # Submitting this plugin
 
-Each portal needs the owner's own sign-in. Nothing here has been submitted yet. Run the local checks first:
+Each portal needs the owner's own sign-in. Nothing here has been submitted yet. Order: Cursor first, then Codex. Run the local checks first:
 
 ```sh
 claude plugin validate --strict --profile directory .
@@ -27,29 +27,11 @@ Text to paste:
 | Description | SnapRender renders public web pages in a real browser and returns what a visitor sees: desktop and phone screenshots, full pages, dark mode, with ads and cookie banners removed. It also reads pages as clean markdown. The plugin connects Cursor to the hosted SnapRender MCP server (OAuth sign-in in the browser, 11 tools) and adds three skills: see-web-page (desktop and phone screenshots with a short report of visual bugs), read-web-page (current docs as markdown before writing code) and watch-web-page (scheduled captures that alert when a page changes). Free plan: 200 captures a month. Public pages only: no localhost, private networks or pages behind a login. |
 | Category (if asked) | Developer tools |
 
-## 2. Claude plugin directory (Anthropic)
+## 2. Claude plugin directory (Anthropic): not available
 
-- **Portal:** https://claude.ai/directory/manage, then **Submit new**, then **Plugin bundle**. Needs a paid claude.ai plan and the GitHub account User0856 connected to claude.ai in the same organization (the portal checks push access).
-- **Before submitting:** open **Submissions** and check whether the May 8 2026 Connectors Directory submission of the hosted MCP server is there. The docs ask for the remote MCP server to be submitted separately as an **MCP connector** and paired with the plugin; do not submit the connector twice.
+Not available for this project. Anthropic's directory now takes submissions from registered businesses only, so nothing is submitted there. Revisit only if that rule changes.
 
-Fields:
-
-| Step | Field | Value |
-| --- | --- | --- |
-| Source | Repository | `User0856/snaprender-agent-plugin` |
-| Source | Plugin path | leave empty (plugin is at the repo root) |
-| Source | Branch or tag | leave empty (follows `main`) |
-| Source | Validate | must show no **Blocking** findings |
-| Listing details | (read from `plugin.json` and README) | name `snaprender`, display name SnapRender, icon `assets/logo.png`, docs/support/privacy/terms URLs from `plugin.json` |
-| Data handling | Reads or stores personal data? | No. The plugin sends only the URLs and capture options the agent passes to SnapRender's own API. |
-| Data handling | Sends data to services other than its declared connectors? | No. Only `https://app.snap-render.com/mcp` (the declared MCP server). |
-| Data handling | How long is data kept? | Captures are cached for a limited time (24 hours by default) so repeat requests are free, then deleted. Account data per https://snap-render.com/privacy |
-| Data handling | Intended for people under 18? | No |
-| Compliance | Contact email | support@snap-render.com |
-| Compliance | Acknowledgements | tick all four |
-| Review and submit | How new versions reach the directory | GitHub push webhook (default), then **Set up push updates** |
-
-Raise `version` in `.claude-plugin/plugin.json` with every release.
+The plugin still installs in Claude Code from this repo's own marketplace: `/plugin marketplace add User0856/snaprender-agent-plugin`, then `/plugin install snaprender@snaprender`.
 
 ## 3. OpenAI plugin portal (Codex)
 
