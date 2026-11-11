@@ -1,0 +1,20 @@
+{
+  "name": "snaprender",
+  "displayName": "SnapRender",
+  "version": "1.0.0",
+  "description": "Screenshot and read public web pages from your agent: desktop and phone captures, full-page images and clean markdown, rendered in a real browser. Includes the hosted SnapRender MCP server (OAuth sign-in) and skills to check a page visually, read it, and watch it for changes.",
+  "author": {
+    "name": "SnapRender",
+    "email": "support@snap-render.com",
+    "url": "https://snap-render.com"
+  },
+  "homepage": "https://snap-render.com/ai-agents",
+  "repository": "https://github.com/User0856/snaprender-agent-plugin",
+  "license": "MIT",
+  "keywords": ["screenshot", "web-page", "visual-qa", "responsive", "markdown", "web-scraping", "monitoring", "mcp"],
+  "icon": "./assets/logo.png",
+  "documentationUrl": "https://snap-render.com/docs",
+  "supportUrl": "https://snap-render.com/support",
+  "privacyPolicyUrl": "https://snap-render.com/privacy",
+  "termsOfServiceUrl": "https://snap-render.com/terms"
+}

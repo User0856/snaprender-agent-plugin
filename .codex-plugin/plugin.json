@@ -1,0 +1,96 @@
+{
+  "name": "snaprender",
+  "version": "1.0.0",
+  "description": "Screenshot and read public web pages: desktop and phone captures, full-page images and clean markdown, rendered in a real browser.",
+  "author": {
+    "name": "SnapRender",
+    "email": "support@snap-render.com",
+    "url": "https://snap-render.com"
+  },
+  "homepage": "https://snap-render.com/ai-agents",
+  "repository": "https://github.com/User0856/snaprender-agent-plugin",
+  "license": "MIT",
+  "keywords": ["screenshot", "web-page", "visual-qa", "responsive", "markdown", "monitoring"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SnapRender",
+    "shortDescription": "See and read any web page",
+    "longDescription": "SnapRender gives Codex eyes on the web. It renders public web pages in a real browser and returns what a visitor would see: a screenshot on desktop or a phone, tablet or laptop preset, one screen or the full page, in light or dark mode, with ads and cookie banners removed. It also reads pages as clean markdown, text, links or metadata, so Codex works from the current page instead of memory.\n\nUse it to check a deployed UI change on a phone, find layout bugs (cut-off text, overlaps, broken navigation), read current API docs before writing code, capture up to 50 URLs in one batch, and set up webhooks for scheduled change checks.\n\nIncluded skills: see-web-page (desktop and phone screenshots with a short report of visual problems), read-web-page (a page as markdown, trimmed to the main content) and watch-web-page (scheduled captures that alert when a page changes; schedules are created in the SnapRender dashboard or REST API).\n\nFor developers, designers and anyone who needs to see or read a public page from Codex. Sign in with a SnapRender account (OAuth in the browser). The free plan has 200 captures a month.\n\nLimitations: SnapRender only reaches public pages. It cannot open localhost, private networks or pages behind a login, and it does not click through multi-step flows (it can click one element before a capture).",
+    "developerName": "SnapRender",
+    "category": "Developer Tools",
+    "capabilities": ["Take screenshots of web pages", "Read web pages as markdown", "Batch screenshots", "Check capture usage", "Manage change webhooks"],
+    "websiteURL": "https://snap-render.com/ai-agents",
+    "supportURL": "https://snap-render.com/support",
+    "privacyPolicyURL": "https://snap-render.com/privacy",
+    "termsOfServiceURL": "https://snap-render.com/terms",
+    "defaultPrompt": [
+      "Screenshot https://example.com on desktop and on iPhone 15 Pro and list what looks broken on mobile.",
+      "Read https://example.com as markdown and summarize it in five bullet points.",
+      "How many SnapRender captures do I have left this month?"
+    ],
+    "brandColor": "#4F46E5",
+    "brandColorDark": "#818CF8",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Desktop and phone screenshots of a public page, with a visual check",
+              "prompt": "Screenshot https://example.com on desktop and on iPhone 15 Pro and tell me if anything looks broken on mobile.",
+              "tools_triggered": "take_screenshot",
+              "expected_behavior": "Calls take_screenshot twice (once with no device, once with device iphone_15_pro), shows or describes both images, and gives a short list of visible layout problems, or says both views look fine."
+            },
+            {
+              "description": "Read a public page as markdown and summarize it",
+              "prompt": "Read https://en.wikipedia.org/wiki/Web_page and summarize it in five bullet points.",
+              "tools_triggered": "extract_content",
+              "expected_behavior": "Calls extract_content with type markdown (optionally a selector such as main) and returns a five-bullet summary based only on the page text."
+            },
+            {
+              "description": "Full-page capture in dark mode",
+              "prompt": "Take a full-page screenshot of https://github.com in dark mode.",
+              "tools_triggered": "take_screenshot",
+              "expected_behavior": "Calls take_screenshot with full_page true and dark_mode true and returns the image of the whole page."
+            },
+            {
+              "description": "Check the account's remaining captures",
+              "prompt": "How many SnapRender captures do I have left this month, and when does it reset?",
+              "tools_triggered": "get_usage",
+              "expected_behavior": "Calls get_usage and reports the plan, captures used, captures left and the reset date."
+            },
+            {
+              "description": "List the links on a page to find a subpage",
+              "prompt": "List the links on https://snap-render.com/docs and tell me which one covers scheduled captures.",
+              "tools_triggered": "extract_content",
+              "expected_behavior": "Calls extract_content with type links and points to the link about schedules (the POST /v1/schedules section or the scheduled captures page)."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Local address: SnapRender cannot reach localhost or private networks. Expected: no capture is attempted (or the error is explained) and the user is asked for a public or preview URL.",
+              "prompt": "Take a screenshot of http://localhost:3000 so I can see my dev server."
+            },
+            {
+              "description": "Page behind a login: SnapRender has no access to the user's signed-in session. Expected: explains that only public pages can be captured and asks for a public page or a shareable preview link, without asking for the user's password.",
+              "prompt": "Screenshot my Gmail inbox at https://mail.google.com/mail/u/0/#inbox."
+            },
+            {
+              "description": "Multi-step interaction: SnapRender captures pages, it does not fill forms or make purchases. Expected: declines to place the order and offers to screenshot the product page instead.",
+              "prompt": "Go to https://www.amazon.com, add a USB-C cable to my cart and check out."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "SnapRender does not sell products or process payments inside the plugin."
+      },
+      "publication": {
+        "release_notes": "First release: hosted SnapRender MCP server with OAuth sign-in, plus see-web-page, read-web-page and watch-web-page skills."
+      }
+    }
+  }
+}

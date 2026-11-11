@@ -1,0 +1,17 @@
+{
+  "name": "snaprender",
+  "displayName": "SnapRender",
+  "version": "1.0.0",
+  "description": "Screenshot and read public web pages from Cursor: desktop and phone captures, full-page images and clean markdown, rendered in a real browser with ads and cookie banners removed. Check a deployed UI on a phone, read current docs before writing code, and watch pages for changes.",
+  "author": {
+    "name": "SnapRender",
+    "email": "support@snap-render.com"
+  },
+  "homepage": "https://snap-render.com/ai-agents",
+  "repository": "https://github.com/User0856/snaprender-agent-plugin",
+  "license": "MIT",
+  "keywords": ["snaprender", "screenshot", "website-screenshots", "full-page-screenshots", "visual-qa", "responsive", "markdown", "mcp"],
+  "logo": "assets/logo.svg",
+  "skills": "skills",
+  "mcpServers": "mcp.json"
+}

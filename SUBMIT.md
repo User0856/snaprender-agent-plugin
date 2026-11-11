@@ -1,0 +1,83 @@
+# Submitting this plugin
+
+Each portal needs the owner's own sign-in. Nothing here has been submitted yet. Run the local checks first:
+
+```sh
+claude plugin validate --strict --profile directory .
+./scripts/build-codex-zip.sh
+```
+
+## 1. Cursor Marketplace
+
+- **Portal:** https://cursor.com/marketplace/publish (sign in to Cursor first; the page opens a "plugin publisher application").
+- **Requirements (cursor.com/docs/reference/plugins):** public open-source repo, `.cursor-plugin/plugin.json`, lowercase kebab-case `name`, README with usage, relative paths only, tested locally. Every update is reviewed by the Cursor team.
+- **Local test before submitting:** copy the repo to `~/.cursor/plugins/local/snaprender/`, run Developer: Reload Window, open Customize, check that 3 skills and the SnapRender MCP server appear, choose Authenticate and sign in.
+
+Text to paste:
+
+| Field | Text |
+| --- | --- |
+| Repository | `https://github.com/User0856/snaprender-agent-plugin` |
+| Plugin name | `snaprender` |
+| Display name | SnapRender |
+| Publisher | SnapRender |
+| Contact email | support@snap-render.com |
+| Website | https://snap-render.com/ai-agents |
+| Short description | Screenshot and read public web pages from Cursor. |
+| Description | SnapRender renders public web pages in a real browser and returns what a visitor sees: desktop and phone screenshots, full pages, dark mode, with ads and cookie banners removed. It also reads pages as clean markdown. The plugin connects Cursor to the hosted SnapRender MCP server (OAuth sign-in in the browser, 11 tools) and adds three skills: see-web-page (desktop and phone screenshots with a short report of visual bugs), read-web-page (current docs as markdown before writing code) and watch-web-page (scheduled captures that alert when a page changes). Free plan: 200 captures a month. Public pages only: no localhost, private networks or pages behind a login. |
+| Category (if asked) | Developer tools |
+
+## 2. Claude plugin directory (Anthropic)
+
+- **Portal:** https://claude.ai/directory/manage, then **Submit new**, then **Plugin bundle**. Needs a paid claude.ai plan and the GitHub account User0856 connected to claude.ai in the same organization (the portal checks push access).
+- **Before submitting:** open **Submissions** and check whether the May 8 2026 Connectors Directory submission of the hosted MCP server is there. The docs ask for the remote MCP server to be submitted separately as an **MCP connector** and paired with the plugin; do not submit the connector twice.
+
+Fields:
+
+| Step | Field | Value |
+| --- | --- | --- |
+| Source | Repository | `User0856/snaprender-agent-plugin` |
+| Source | Plugin path | leave empty (plugin is at the repo root) |
+| Source | Branch or tag | leave empty (follows `main`) |
+| Source | Validate | must show no **Blocking** findings |
+| Listing details | (read from `plugin.json` and README) | name `snaprender`, display name SnapRender, icon `assets/logo.png`, docs/support/privacy/terms URLs from `plugin.json` |
+| Data handling | Reads or stores personal data? | No. The plugin sends only the URLs and capture options the agent passes to SnapRender's own API. |
+| Data handling | Sends data to services other than its declared connectors? | No. Only `https://app.snap-render.com/mcp` (the declared MCP server). |
+| Data handling | How long is data kept? | Captures are cached for a limited time (24 hours by default) so repeat requests are free, then deleted. Account data per https://snap-render.com/privacy |
+| Data handling | Intended for people under 18? | No |
+| Compliance | Contact email | support@snap-render.com |
+| Compliance | Acknowledgements | tick all four |
+| Review and submit | How new versions reach the directory | GitHub push webhook (default), then **Set up push updates** |
+
+Raise `version` in `.claude-plugin/plugin.json` with every release.
+
+## 3. OpenAI plugin portal (Codex)
+
+- **Portal:** OpenAI Platform, Plugins (guide: https://developers.openai.com/plugins/deploy/submission). Organization owner or a member with Apps Management Write; the verified developer identity is needed to publish under the SnapRender name.
+- **Upload:** run `./scripts/build-codex-zip.sh` and upload `dist/snaprender-codex-plugin-<version>.zip` with **Upload new or existing plugin**. The ZIP holds `.codex-plugin/plugin.json`, `.mcp.json`, `skills/`, `assets/`, README and LICENSE. Listing text, icons, the 5 positive and 3 negative test cases and release notes are read from `.codex-plugin/plugin.json`, so they do not need typing.
+- **MCPs tab:** **Connect** `https://app.snap-render.com/mcp`. Authentication: OAuth (the server supports dynamic client registration; no client secret). Domain verification: paste the challenge token the portal shows into the existing `/.well-known/openai-apps-challenge` route on app.snap-render.com (route in `src/routes/pages.ts` of the main repo), deploy, then verify.
+- **Still needed from the owner:**
+  1. A demo video URL (reviewer-accessible) that runs the test cases. Add it to the package as `extensions.com.openai.review.demo_recording_url` in `.codex-plugin/plugin.json` or enter it in Review details.
+  2. A dedicated reviewer test account (email and password sign-in, no magic link or 2FA, some free captures left), entered only in **Review details**, never in the ZIP.
+- **Policy attestations** and **Submit for review**, then **Publish plugin** after approval.
+
+Listing values already in the package, for reference:
+
+| Field | Value |
+| --- | --- |
+| Display name | SnapRender |
+| Short description | See and read any web page |
+| Developer name | SnapRender |
+| Category | Developer Tools |
+| Website / support / privacy / terms | https://snap-render.com/ai-agents, https://snap-render.com/support, https://snap-render.com/privacy, https://snap-render.com/terms |
+| Brand colors | #4F46E5 (light), #818CF8 (dark) |
+| Starter prompts | 3, see `.codex-plugin/plugin.json` |
+
+Test cases in the package (the screenshot and read flows were run against the live server on Nov 11 2026 through Claude Code; run all eight with the reviewer account in Codex before submitting):
+
+- Positive: desktop and iPhone 15 Pro screenshots of example.com with a visual check (`take_screenshot`); read a Wikipedia page as markdown and summarize (`extract_content`); full-page dark-mode capture of github.com (`take_screenshot`); captures left this month (`get_usage`); list the links on snap-render.com/docs and find the schedules section (`extract_content`).
+- Negative: screenshot of `http://localhost:3000` (ask for a public URL); screenshot of a Gmail inbox (explain login pages cannot be captured, never ask for a password); add an item to an Amazon cart and check out (decline, offer a screenshot instead).
+
+## 4. skills.sh
+
+No submission. The listing and ranking come from installs with `npx skills add User0856/snaprender-agent-plugin`. Put that command in docs and READMEs.
