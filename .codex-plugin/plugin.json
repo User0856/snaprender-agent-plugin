@@ -1,6 +1,6 @@
 {
   "name": "snaprender",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Screenshot and read public web pages: desktop and phone captures, full-page images and clean markdown, rendered in a real browser.",
   "author": {
     "name": "SnapRender",

@@ -4,7 +4,6 @@ Each portal needs the owner's own sign-in. Nothing here has been submitted yet. 
 
 ```sh
 claude plugin validate --strict --profile directory .
-./scripts/build-codex-zip.sh
 ```
 
 ## 1. Cursor Marketplace
@@ -30,6 +29,7 @@ Text to paste:
 ## 2. Claude plugin directory (Anthropic)
 
 - **Portal:** https://claude.ai/directory/manage. Any paid claude.ai plan can submit (Pro and Max from your own account). The Company step takes a name and website as free text.
+- Allowed file types for unverified organizations: Markdown, text, JSON, YAML, PNG/JPEG/GIF/WebP/ICO images. No scripts, no files starting with `#!`, no SVG. v1.0.0 was refused for a shell script; v1.0.1 removed it and the SVG logo.
 - **Status:** the hosted MCP connector (https://app.snap-render.com/mcp) was submitted on Nov 12 2026 and is in review. Next: submit this repo as a **Plugin bundle** (Submit new, Plugin bundle, repo `User0856/snaprender-agent-plugin`, path and branch empty) and link it to the connector.
 - Saving an edit on a listing that is in review moves it back to Draft: click **Submit for review** again after saving.
 - Data handling answers: no personal data read or stored; data goes only to `https://app.snap-render.com/mcp`; captures cached 24 hours by default; not intended for under-18s. Contact: support@snap-render.com.
@@ -37,7 +37,15 @@ Text to paste:
 ## 3. OpenAI plugin portal (Codex)
 
 - **Portal:** OpenAI Platform, Plugins (guide: https://developers.openai.com/plugins/deploy/submission). Organization owner or a member with Apps Management Write; the verified developer identity is needed to publish under the SnapRender name.
-- **Upload:** run `./scripts/build-codex-zip.sh` and upload `dist/snaprender-codex-plugin-<version>.zip` with **Upload new or existing plugin**. The ZIP holds `.codex-plugin/plugin.json`, `.mcp.json`, `skills/`, `assets/`, README and LICENSE. Listing text, icons, the 5 positive and 3 negative test cases and release notes are read from `.codex-plugin/plugin.json`, so they do not need typing.
+- **Upload:** build the ZIP from the repo root (the repo keeps no scripts, because the Claude directory refuses them from unverified organizations):
+
+  ```sh
+  v=$(sed -n 's/^  "version": "\(.*\)",$/\1/p' .codex-plugin/plugin.json)
+  mkdir -p dist && rm -f dist/snaprender-codex-plugin-$v.zip
+  zip -r -X dist/snaprender-codex-plugin-$v.zip .codex-plugin/plugin.json .mcp.json skills assets README.md LICENSE -x '*.DS_Store'
+  ```
+
+  Then upload `dist/snaprender-codex-plugin-<version>.zip` with **Upload new or existing plugin**. The ZIP holds `.codex-plugin/plugin.json`, `.mcp.json`, `skills/`, `assets/`, README and LICENSE. Listing text, icons, the 5 positive and 3 negative test cases and release notes are read from `.codex-plugin/plugin.json`, so they do not need typing.
 - **MCPs tab:** **Connect** `https://app.snap-render.com/mcp`. Authentication: OAuth (the server supports dynamic client registration; no client secret). Domain verification: paste the challenge token the portal shows into the existing `/.well-known/openai-apps-challenge` route on app.snap-render.com (route in `src/routes/pages.ts` of the main repo), deploy, then verify.
 - **Still needed from the owner:**
   1. A demo video URL (reviewer-accessible) that runs the test cases. Add it to the package as `extensions.com.openai.review.demo_recording_url` in `.codex-plugin/plugin.json` or enter it in Review details.

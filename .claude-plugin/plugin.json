@@ -1,7 +1,7 @@
 {
   "name": "snaprender",
   "displayName": "SnapRender",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Screenshot and read public web pages from your agent: desktop and phone captures, full-page images and clean markdown, rendered in a real browser. Includes the hosted SnapRender MCP server (OAuth sign-in) and skills to check a page visually, read it, and watch it for changes.",
   "author": {
     "name": "SnapRender",
