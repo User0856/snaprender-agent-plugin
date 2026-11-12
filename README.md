@@ -109,6 +109,17 @@ The CLI asks which skills and which agents (Claude Code, Codex, Cursor, OpenCode
 
 Setup guides for each client: https://snap-render.com/ai-connectors
 
+## No account yet? (AI agents)
+
+An agent with no key can start in one call. `POST https://app.snap-render.com/v1/agent-trial` returns an `sk_trial_` key at once, with no signup:
+
+```bash
+curl -X POST https://app.snap-render.com/v1/agent-trial \
+  -H "Content-Type: application/json" -d '{"agent": "my-agent"}'
+```
+
+Send the key to the hosted MCP server as `Authorization: Bearer sk_trial_...`, or as `X-API-Key` on REST calls. A trial key gets 100 captures over 7 days (30 a day), a small corner watermark and a slower lane. The developer claims it with a free account through the `claim_url` in the response (200 captures a month, no watermark), and the agent's key keeps working. Details: https://snap-render.com/docs/agent-trial
+
 ## Try it
 
 - Screenshot https://example.com on desktop and on iPhone 15 Pro and list what looks broken on mobile
